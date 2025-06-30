@@ -21,6 +21,8 @@ var (
 	androidNDKPath string
 )
 
+const fixedVersion = "26.2.11394342"
+
 func FindSDK() {
 	searchPath := []string{
 		"$ANDROID_HOME",
@@ -39,7 +41,7 @@ func FindSDK() {
 		log.Fatal("android SDK not found")
 	}
 	if !findNDK() {
-		log.Fatal("android NDK not found")
+		log.Fatal("android NDK not found for fixed version ", fixedVersion)
 	}
 
 	javaVersion, err := shell.Exec("java", "--version").ReadOutput()
@@ -58,7 +60,6 @@ func FindSDK() {
 }
 
 func findNDK() bool {
-	const fixedVersion = "26.2.11394342"
 	const versionFile = "source.properties"
 	if fixedPath := filepath.Join(androidSDKPath, "ndk", fixedVersion); rw.FileExists(filepath.Join(fixedPath, versionFile)) {
 		androidNDKPath = fixedPath
